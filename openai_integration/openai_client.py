@@ -19,14 +19,11 @@ def process_expense(text: str, image_bytes: bytes = None) -> dict:
         image_bytes (bytes, optional): The image file as a byte stream. Defaults to None.
 
     Returns:
-        dict: A JSON object with keys: 'total_price', 'currency', 'total_price_euro', 'items', 'user_comment'.
+        dict: A JSON object with keys: 'items', 'comment'.
               Each item in 'items' includes 'name', 'price', 'currency', 'category', and 'subcategory'.
     """
     example_input = "Starbucks Croissant 1.20 euro and Latte 3.50 euro"
     example_output = {
-        "total_price": "4.70",
-        "currency": "EUR",
-        "total_price_euro": "4.70",
         "items": [
             {
                 "name": "Croissant",
@@ -37,14 +34,14 @@ def process_expense(text: str, image_bytes: bytes = None) -> dict:
             },
             {"name": "Latte", "price": "3.50", "currency": "EUR", "category": "Food & Drinks", "subcategory": "Coffee"},
         ],
-        "user_comment": "Starbucks purchase",
+        "comment": "Starbucks purchase",
     }
     prompt = (
         f"Analyze the following expense information: {text}\n\n"
         "Available categories and subcategories:\n"
         f"{json.dumps(CATEGORIES, ensure_ascii=False, indent=2)}\n\n"
         "Return a JSON object with the following keys: "
-        "'total_price', 'currency', 'total_price_euro', 'items', 'user_comment'.\n"
+        "'items', 'comment'.\n"
         "Each item in 'items' should include 'name', 'price', 'currency', 'category', and 'subcategory'.\n"
         "Ensure that 'category' and 'subcategory' are chosen only from the provided list.\n\n"
         f"Example input:\n{example_input}\n\n"
