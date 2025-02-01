@@ -10,6 +10,22 @@ openai.api_key = OPENAI_API_KEY
 client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
 
+def generate_chat_completion(client: openai.OpenAI, message: dict, model: str = "gpt-4o-mini") -> str:
+    """
+    Sends a chat completion request to OpenAI API and returns the response.
+
+    Args:
+        client (openai.OpenAI): The OpenAI API client.
+        message (dict[str, Any]): The message payload for the API request.
+        model (str, optional): The model to use. Defaults to "gpt-4o-mini".
+
+    Returns:
+        dict[str, Any]: The API response parsed as a JSON object.
+    """
+    response = client.chat.completions.create(model=model, messages=[message], response_format={"type": "json_object"})
+    return json.loads(response.choices[0].message.content)
+
+
 def process_expense(text: str, image_bytes: bytes = None) -> dict:
     """
     Processes expense information from text (and optionally an image) and returns structured expense data.
@@ -65,8 +81,6 @@ def process_expense(text: str, image_bytes: bytes = None) -> dict:
     else:
         message = {"role": "user", "content": prompt}
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini", messages=[message], response_format={"type": "json_object"}
-    )
-    res = json.loads(response.choices[0].message.content)
-    return res
+    result = generate_chat_completion(client=client, message=message)
+
+    return result
