@@ -13,5 +13,6 @@ CATEGORIES = {
     "Financial Expenses": ["Taxes, Loans & Fees"],
     "Investments": ["Investments & Savings"],
     "Household Items": ["Cleaning & Household Supplies"],
+    "Sports & Fitness": ["Gym Membership", "Sports Nutrition"],
     "Other": ["Other"],
 }
