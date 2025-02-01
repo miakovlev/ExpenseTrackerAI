@@ -1,0 +1,50 @@
+# Ruff
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = [
+    ".venv"
+]
+fix = true
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "UP",  # pyupgrade
+    "PL", # pylint
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "S", # flake8-bandit
+    "TID", # flake8-tidy-imports
+    "PTH", # flake8-use-pathlib
+    "INP", # flake8-no-pep420
+    "PIE", # flake8-pie
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "DTZ", # flake8-datetimez
+    "RUF", # ruff
+]
+unfixable = ["F401", "F841"]
+ignore = [
+    "E501",  # line too long, handled by black
+    "S101",  # use of `assert` detected, useless
+    "C901",  # too complex
+    "SIM103", # return the condition directly
+    "SIM108", # use ternary operator, meh
+    "PLR0912", # too many branches, maybe?
+    "PLR0913", # too many arguments to function call
+    "PLR0915", # too many statements
+    "PLR2004", # magic value used in comparison
+    "PLW2901", # loop variable overwritten by assignment target
+    "RUF001", # string contains ambiguous unicode character
+    "RUF002", # docstring contains ambiguous unicode character
+    "RUF003", # comment contains ambiguous unicode character
+    "RUF012", # mutable class attributes should be annotated with `typing.ClassVar`
+    "W191", # indentation contains tabs
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "F403"]
