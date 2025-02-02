@@ -62,7 +62,7 @@ def store_receipt_in_db(json_response: dict) -> int:
         int: The generated ID for this receipt.
     """
     cyprus_tz = pytz.timezone("Asia/Nicosia")
-    current_time = datetime.now(tz=cyprus_tz)
+    current_time = datetime.now(cyprus_tz).strftime("%Y-%m-%d %H:%M:%S")
 
     total_price = float(json_response.get("total_price", 0))
     currency = json_response.get("currency", "EUR")
