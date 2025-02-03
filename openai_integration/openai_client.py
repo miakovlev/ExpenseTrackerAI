@@ -3,7 +3,7 @@ import json
 
 import openai
 
-from bot.config import OPENAI_API_KEY
+from config.config import OPENAI_API_KEY
 from bot.constants import CATEGORIES
 
 openai.api_key = OPENAI_API_KEY
@@ -37,6 +37,7 @@ def process_expense(text: str, image_bytes: bytes = None) -> dict:
     Returns:
         dict: A JSON object with keys: 'items', 'comment'.
               Each item in 'items' includes 'name', 'price', 'currency', 'category', and 'subcategory'.
+              If the image does not appear to be a valid receipt, returns an object with an 'error' key.
     """
     example_input = "Starbucks Croissant 1.20 euro and Latte 3.50 euro"
     example_output = {
@@ -48,18 +49,30 @@ def process_expense(text: str, image_bytes: bytes = None) -> dict:
                 "category": "Food & Drinks",
                 "subcategory": "Groceries & Delivery",
             },
-            {"name": "Latte", "price": "3.50", "currency": "EUR", "category": "Food & Drinks", "subcategory": "Coffee"},
+            {
+                "name": "Latte",
+                "price": "3.50",
+                "currency": "EUR",
+                "category": "Food & Drinks",
+                "subcategory": "Coffee"
+            },
         ],
         "comment": "Starbucks purchase",
     }
+    # Add instruction for invalid receipt detection.
+    extra_instruction = (
+        "If the provided image does not contain receipt-related text, or if the provided text does not appear to be a valid receipt, "
+        "return a JSON object with the key 'error' and the value 'Invalid receipt'.\n"
+        "Ensure that the entire response is strictly in English."
+    )
     prompt = (
         f"Analyze the following expense information: {text}\n\n"
         "Available categories and subcategories:\n"
         f"{json.dumps(CATEGORIES, ensure_ascii=False, indent=2)}\n\n"
-        "Return a JSON object with the following keys: "
-        "'items', 'comment'.\n"
+        "Return a JSON object with the following keys: 'items', 'comment'.\n"
         "Each item in 'items' should include 'name', 'price', 'currency', 'category', and 'subcategory'.\n"
         "Ensure that 'category' and 'subcategory' are chosen only from the provided list.\n\n"
+        f"{extra_instruction}\n\n"
         f"Example input:\n{example_input}\n\n"
         "Example output:\n"
         f"{json.dumps(example_output, ensure_ascii=False, indent=2)}"
@@ -82,5 +95,4 @@ def process_expense(text: str, image_bytes: bytes = None) -> dict:
         message = {"role": "user", "content": prompt}
 
     result = generate_chat_completion(client=client, message=message)
-
     return result

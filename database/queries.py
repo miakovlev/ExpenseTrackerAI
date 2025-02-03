@@ -116,6 +116,5 @@ if __name__ == "__main__":
         ],
     }
 
-    create_tables()
     generated_id = store_receipt_in_db(sample_response)
     print(f"Receipt saved with ID: {generated_id}")
