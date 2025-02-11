@@ -35,6 +35,9 @@ async def handle_expense(update: Update, context: CallbackContext) -> None:
     otherwise, it uses a default instruction.
     If the returned response contains an error, it does not save data to the database.
     """
+    if update.edited_message:
+        return
+
     if update.message.photo:
         photo_file = await update.message.photo[-1].get_file()
         photo_bytes = await photo_file.download_as_bytearray()
