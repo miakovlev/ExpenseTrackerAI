@@ -50,7 +50,7 @@ def store_receipt_in_db(json_response: dict) -> int:
         {
         "total_price": "1.7",
         "currency": "EUR",
-        "total_price_euro": "1.70",
+        "total_price_euro": "1.7",
         "user_comment": "Purchase at supermarket",
         "items": [
             {"name": "Milk", "price": "1", "currency": "EUR", "category": "Groceries", "subcategory": "Dairy"},
