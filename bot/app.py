@@ -58,7 +58,7 @@ async def handle_expense(update: Update, context: CallbackContext) -> None:
 
         await update.message.reply_text(
             f"✅ Receipt processed (ID: {receipt_id}).\n\n"
-            f"Comment: {receipt_data.get('comment', 'No comment')}\n"
+            f"Comment: {receipt_data.get('user_comment', 'No comment')}\n"
             "Items:\n" +
             "\n".join([
                 f"- {item['name']}: {item['price']} {item['currency']} "
@@ -78,7 +78,7 @@ async def handle_expense(update: Update, context: CallbackContext) -> None:
 
         await update.message.reply_text(
             f"✅ Expense recorded (ID: {expense_id}).\n\n"
-            f"Comment: {expense_data.get('comment', 'No comment')}\n"
+            f"Comment: {expense_data.get('user_comment', 'No comment')}\n"
             "Items:\n" +
             "\n".join([
                 f"- {item['name']}: {item['price']} {item['currency']} "
