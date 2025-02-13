@@ -60,6 +60,7 @@ def process_expense(text: str, image_bytes: bytes | None = None) -> dict:
     extra_instruction = (
         "If the provided image does not contain receipt-related text, or if the provided text does not appear to be a valid receipt, "
         "return a JSON object with the key 'error' and the value 'Invalid receipt'.\n"
+        "If the currency cannot be determined, default to EUR.\n"
         "Ensure that the entire response is strictly in English."
     )
     prompt = (
