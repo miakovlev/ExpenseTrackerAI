@@ -3,14 +3,14 @@ import json
 
 import openai
 
-from config.config import OPENAI_API_KEY
 from bot.constants import CATEGORIES
+from config.config import OPENAI_API_KEY
 
 openai.api_key = OPENAI_API_KEY
-client = openai.OpenAI(api_key=OPENAI_API_KEY)
+client_openai = openai.OpenAI(api_key=OPENAI_API_KEY)
 
 
-def generate_chat_completion(client: openai.OpenAI, message: dict, model: str = "gpt-4o-mini") -> str:
+def generate_chat_completion(client: openai.OpenAI, message: dict, model: str = "gpt-4o-mini") -> dict:
     """
     Sends a chat completion request to OpenAI API and returns the response.
 
@@ -26,7 +26,7 @@ def generate_chat_completion(client: openai.OpenAI, message: dict, model: str = 
     return json.loads(response.choices[0].message.content)
 
 
-def process_expense(text: str, image_bytes: bytes = None) -> dict:
+def process_expense(text: str, image_bytes: bytes | None = None) -> dict:
     """
     Processes expense information from text (and optionally an image) and returns structured expense data.
 
@@ -52,13 +52,7 @@ def process_expense(text: str, image_bytes: bytes = None) -> dict:
                 "category": "Food & Drinks",
                 "subcategory": "Groceries & Delivery",
             },
-            {
-                "name": "Latte",
-                "price": "3.50",
-                "currency": "EUR",
-                "category": "Food & Drinks",
-                "subcategory": "Coffee"
-            },
+            {"name": "Latte", "price": "3.50", "currency": "EUR", "category": "Food & Drinks", "subcategory": "Coffee"},
         ],
         "user_comment": "Starbucks purchase",
     }
@@ -97,5 +91,5 @@ def process_expense(text: str, image_bytes: bytes = None) -> dict:
     else:
         message = {"role": "user", "content": prompt}
 
-    result = generate_chat_completion(client=client, message=message)
+    result = generate_chat_completion(client=client_openai, message=message)
     return result

@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 
 import pytz
 
@@ -13,6 +13,8 @@ def create_tables():
     CREATE TABLE IF NOT EXISTS expensetrackerai_receipts (
         id SERIAL PRIMARY KEY,
         created_at TIMESTAMP NOT NULL,
+        user_id BIGINT,
+        username VARCHAR(255),
         total_price DOUBLE PRECISION,
         currency VARCHAR(10),
         total_price_euro DOUBLE PRECISION,
@@ -68,6 +70,8 @@ def store_receipt_in_db(json_response: dict) -> int:
     currency = json_response.get("currency", "EUR")
     total_price_euro = float(json_response.get("total_price_euro", 0))
     user_comment = json_response.get("user_comment", "")
+    user_id = json_response.get("user_id")
+    username = json_response.get("username")
 
     conn = get_connection()
     receipt_id = None
@@ -76,11 +80,14 @@ def store_receipt_in_db(json_response: dict) -> int:
             with conn.cursor() as cur:
                 insert_receipt_query = """
                     INSERT INTO expensetrackerai_receipts (
-                        created_at, total_price, currency, total_price_euro, user_comment
-                    ) VALUES (%s, %s, %s, %s, %s)
+                        created_at, user_id, username, total_price, currency, total_price_euro, user_comment
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;
                 """
-                cur.execute(insert_receipt_query, (current_time, total_price, currency, total_price_euro, user_comment))
+                cur.execute(
+                    insert_receipt_query,
+                    (current_time, user_id, username, total_price, currency, total_price_euro, user_comment),
+                )
                 receipt_id = cur.fetchone()[0]
 
                 for item_data in json_response.get("items", []):
