@@ -1,7 +1,10 @@
 # queries.py
 from datetime import datetime
+
 import pytz
+
 from database.db import PostgresConnector
+
 
 def create_tables():
     """
@@ -35,6 +38,7 @@ def create_tables():
         db.cursor.execute(create_receipts_table)
         db.cursor.execute(create_items_table)
         db.conn.commit()
+
 
 def store_receipt_in_db(json_response: dict) -> int:
     """
@@ -95,6 +99,7 @@ def store_receipt_in_db(json_response: dict) -> int:
         db.conn.commit()
     return receipt_id
 
+
 if __name__ == "__main__":
     # Create tables if they do not exist
     create_tables()
@@ -106,7 +111,7 @@ if __name__ == "__main__":
         "user_comment": "Purchase at supermarket",
         "items": [
             {"name": "Milk", "price": "1", "currency": "EUR", "category": "Groceries", "subcategory": "Dairy"},
-            {"name": "Bread", "price": "0.7", "currency": "EUR", "category": "Groceries", "subcategory": "Bakery"}
+            {"name": "Bread", "price": "0.7", "currency": "EUR", "category": "Groceries", "subcategory": "Bakery"},
         ],
     }
 

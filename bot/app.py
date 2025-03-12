@@ -1,8 +1,8 @@
-import logging
-import matplotlib.pyplot as plt
-import io
 import base64
+import io
+import logging
 
+import matplotlib.pyplot as plt
 from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import Application, CallbackContext, CommandHandler, MessageHandler, filters
 
@@ -99,12 +99,12 @@ async def handle_spending_chart(update: Update, context: CallbackContext) -> Non
     sizes = list(spending_data.values())
 
     fig, ax = plt.subplots()
-    ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    ax.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=90)
+    ax.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle.
 
     # Save the pie chart to a BytesIO object
     buf = io.BytesIO()
-    plt.savefig(buf, format='png')
+    plt.savefig(buf, format="png")
     buf.seek(0)
     buf.name = "chart.png"  # Set a name attribute for Telegram
     plt.close(fig)
@@ -148,10 +148,14 @@ def main() -> None:
     application.add_handler(CommandHandler("view_spending_chart", handle_spending_chart))
 
     # Handler for the "View Spending Chart" text message
-    application.add_handler(MessageHandler(filters.TEXT & filters.Regex("(?i)^View Spending Chart$"), handle_spending_chart))
+    application.add_handler(
+        MessageHandler(filters.TEXT & filters.Regex("(?i)^View Spending Chart$"), handle_spending_chart)
+    )
 
     # Handler for all other messages (text and photos), excluding the spending chart request
-    application.add_handler(MessageHandler((filters.TEXT | filters.PHOTO) & ~filters.Regex("(?i)^View Spending Chart$"), handle_expense))
+    application.add_handler(
+        MessageHandler((filters.TEXT | filters.PHOTO) & ~filters.Regex("(?i)^View Spending Chart$"), handle_expense)
+    )
 
     application.run_polling()
 

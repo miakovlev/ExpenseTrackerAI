@@ -14,11 +14,7 @@ class PostgresConnector:
 
     def __enter__(self):
         self.conn = psycopg2.connect(
-            dbname=POSTGRES_DB,
-            user=POSTGRES_USER,
-            password=POSTGRES_PASSWORD,
-            host=POSTGRES_HOST,
-            port=POSTGRES_PORT
+            dbname=POSTGRES_DB, user=POSTGRES_USER, password=POSTGRES_PASSWORD, host=POSTGRES_HOST, port=POSTGRES_PORT
         )
         self.cursor = self.conn.cursor()
         return self
@@ -54,6 +50,7 @@ class PostgresConnector:
         """
         df = pd.read_sql_query(query, self.conn, params=params)
         return df
+
 
 if __name__ == "__main__":
     # Sample usage of the connector
