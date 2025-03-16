@@ -4,7 +4,7 @@ Database initialization script for ExpenseTrackerAI.
 Run this script to create all necessary database tables if they don't exist.
 """
 import logging
-from database.queries import create_tables
+from database.schema import create_tables
 from database.db import PostgresConnector
 
 logging.basicConfig(
